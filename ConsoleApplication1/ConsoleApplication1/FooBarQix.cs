@@ -112,7 +112,7 @@ namespace ConsoleApplication1
 
         private static string GetDivisibilityString(int i)
         {
-            var sb = new StringBuilder();
+            var sb = new StringBuilder(); 
             if (i % 3 == 0)
                 sb.Append("Foo");
             if (i % 5 == 0)
