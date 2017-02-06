@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -77,6 +78,7 @@ namespace ConsoleApplication1
         [InlineData("FooBar", 51)]
         [InlineData("BarFoo", 53)]
         [InlineData("FooFooFooFoo", 333)]
+        [InlineData("FooFooFoo", 3313)]
         [InlineData("FooQixFooBarQix", 357)]
         public void Should_Get_N_When_Pass_N(string expected, int n)
         {
@@ -89,24 +91,22 @@ namespace ConsoleApplication1
     {
         public static string Process(int n)
         {
-            string containStringResult = "";
-            n.ToString().ToList().ForEach(x => containStringResult += GetContainString(x.ToString()));
-            var result = GetDivisibilityString(n) + containStringResult;
-
+            var result = GetDivisibilityString(n) + GetContainString(n);
             return String.IsNullOrEmpty(result) ? n.ToString() : result;
         }
 
-        private static string GetContainString(string i)
+        private static string GetContainString(int i)
         {
             var sb = new StringBuilder();
-            if (i.Contains("3"))
-                sb.Append("Foo");
-            if (i.Contains("5"))
-                sb.Append("Bar");
-            if (i.Contains("7"))
-                sb.Append("Qix");
-
-            return sb.ToString();
+            Regex rgx = new Regex("\\d+",RegexOptions.Compiled);
+            i.ToString().ToList()
+                .ForEach(x => 
+                sb.Append(x.ToString().Replace("3","Foo")
+                .Replace("5", "Bar")
+                .Replace("7", "Qix"))
+                );
+           
+            return rgx.Replace(sb.ToString(), "");
 
         }
 
